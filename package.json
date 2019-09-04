@@ -7,6 +7,7 @@
     "test": "test"
   },
   "scripts": {
+    "dev": "node examples/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node-dev --respawn --transpileOnly src/index.ts",
     "style:lint": "tslint -p tsconfig.json -c tslint.json"
