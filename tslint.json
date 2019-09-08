@@ -12,7 +12,7 @@
       "options": [ "property-declaration" ]
     },
     "class-name": true,
-    "interface-name": true,
+    "interface-name": false,
     "variable-name": {
       "options": [ "ban-keywords", "check-format", "allow-leading-underscore", "allow-pascal-case" ]
     },
