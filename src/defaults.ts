@@ -5,6 +5,8 @@ import {transformRequest, transformResponse} from './utils/data';
 const defaults: AxiosRequestConfig = {
     method: 'GET',
     timeout: 0,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
 
     headers: {
         common: {
