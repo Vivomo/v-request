@@ -1,4 +1,4 @@
-import {isDate, isPlainObject} from './index';
+import {isDate, isPlainObject, isURLSearchParams} from './index';
 
 interface URLOrigin {
     protocol: string
@@ -15,35 +15,44 @@ const encode = (val: string): string =>
         .replace(/%5B/g, '[')
         .replace(/%5D/g, ']');
 
-export function buildURL(url: string, params?: any): string {
+export function buildURL(url: string, params?: any, paramsSerializer?: (params: any) => string): string {
     if (!params) {
         return  url;
     }
 
-    const parts: string[] = [];
-    Object.entries(params).forEach(([key, val]) => {
-        if (val === null || val === undefined) {
-            return;
-        }
-        let values = [];
-        if (Array.isArray(val)) {
-            values = val;
-            key += '[]';
-        } else {
-            values = [val];
-        }
-        values.forEach((val) => {
-            let _val = val;
-            if (isDate(val)) {
-                _val = val.toISOString();
-            } else if (isPlainObject(val)) {
-                _val = JSON.stringify(val);
-            }
-            parts.push(`${encode(key)}=${encode(_val)}`)
-        })
-    });
+    let serializedParams;
 
-    let serializedParams = parts.join('&');
+    if (paramsSerializer) {
+        serializedParams = paramsSerializer(params);
+    } else if (isURLSearchParams(params)) {
+        serializedParams = params.toString();
+    } else {
+        const parts: string[] = [];
+        Object.entries(params).forEach(([key, val]) => {
+            if (val === null || val === undefined) {
+                return;
+            }
+            let values = [];
+            if (Array.isArray(val)) {
+                values = val;
+                key += '[]';
+            } else {
+                values = [val];
+            }
+            values.forEach((val) => {
+                let _val = val;
+                if (isDate(val)) {
+                    _val = val.toISOString();
+                } else if (isPlainObject(val)) {
+                    _val = JSON.stringify(val);
+                }
+                parts.push(`${encode(key)}=${encode(_val)}`)
+            })
+        });
+
+        serializedParams = parts.join('&');
+    }
+
     if (serializedParams) {
         const hashIndex = url.indexOf('#');
         if (hashIndex !== -1) {
