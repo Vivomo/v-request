@@ -8,7 +8,7 @@ import {isFormData} from '../utils';
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     return new Promise(((resolve, reject) => {
         const {data = null, url, method = 'GET', headers, responseType, timeout, cancelToken, withCredentials,
-            xsrfCookieName, xsrfHeaderName, onDownloadProgress, onUploadProgress, auth} = config;
+            xsrfCookieName, xsrfHeaderName, onDownloadProgress, onUploadProgress, auth, validateStatus} = config;
 
         const request = new XMLHttpRequest();
 
@@ -118,7 +118,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         }
 
         const handleResponse = (response: AxiosResponse): void => {
-            if (response.status >= 200 && response.status < 300) {
+            if (!validateStatus || validateStatus(response.status)) {
                 resolve(response);
             } else {
                 reject(createError(`Request failed with status code ${response.status}`, config, null, request, response));
