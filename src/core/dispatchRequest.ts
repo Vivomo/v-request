@@ -8,7 +8,12 @@ import transform from './transform';
 const dispatchRequest = (config: AxiosRequestConfig): AxiosPromise => {
     throwIfCancellationRequested(config);
     processConfig(config);
-    return xhr(config).then(resp => transformResponseData(resp));
+    return xhr(config).then(resp => transformResponseData(resp), e => {
+        if (e && e.response) {
+            e.response = transformResponseData(e.response)
+        }
+        return Promise.reject(e);
+    });
 };
 
 const processConfig = (config: AxiosRequestConfig): void => {

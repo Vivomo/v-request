@@ -7,7 +7,7 @@ import {isFormData} from '../utils';
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     return new Promise(((resolve, reject) => {
-        const {data = null, url, method = 'GET', headers, responseType, timeout, cancelToken, withCredentials,
+        const {data = null, url, method = 'GET', headers = {}, responseType, timeout, cancelToken, withCredentials,
             xsrfCookieName, xsrfHeaderName, onDownloadProgress, onUploadProgress, auth, validateStatus,
             paramsSerializer} = config;
 
