@@ -3,7 +3,7 @@ import {AxiosRequestConfig, AxiosResponse} from '../types';
 export class AxiosError extends Error {
     isAxiosError: boolean;
     config: AxiosRequestConfig;
-    code?: string;
+    code?: string | null | undefined;
     request: any;
     response?: AxiosResponse;
 
@@ -11,7 +11,7 @@ export class AxiosError extends Error {
     constructor(
         message: string,
         config: AxiosRequestConfig,
-        code?: string | null,
+        code?: string | null | undefined,
         request?: any,
         response?: AxiosResponse
     ) {
