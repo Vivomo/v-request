@@ -20,7 +20,7 @@ export const processHeaders = (headers: any, data: any): any => {
     normalizeHeaderName(headers, contentType);
 
     if (isPlainObject(data)) {
-        if (!headers[contentType]) {
+        if (headers && !headers[contentType]) {
             headers[contentType] = jsonContentType;
         }
     }
